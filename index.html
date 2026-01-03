@@ -173,14 +173,22 @@
             padding: 0 2px;
             border-radius: 3px;
         }
-        .logo-img {
-    max-width: 160px;      /* taille mobile */
-    width: 100%;
+       .logo-img {
+    width: auto;           /* important : ne pas forcer 100% */
+    max-width: 160px;      /* mobile */
     height: auto;
     display: block;
     margin: 0 auto;
     object-fit: contain;
 }
+@media (min-width: 480px) {
+  .logo-img { max-width: 200px; }
+}
+
+@media (min-width: 768px) {
+  .logo-img { max-width: 240px; }
+}
+
     </style>
 </head>
 
@@ -986,5 +994,6 @@ if ("serviceWorker" in navigator) {
 </body>
 
 </html>
+
 
 
