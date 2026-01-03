@@ -14,126 +14,90 @@
     <title>AKWEL Maintenance Pro</title>
 
    <style>
-        :root { 
-            --primary: #1d1d3b; 
-            --danger: #e30613; 
-            --warning: #f59e0b; 
-            --info: #3b82f6; 
-            --bg: #f1f5f9; 
-            --text: #0f172a; 
-        }
-        
-        body { 
-            font-family: -apple-system, system-ui, sans-serif; 
-            background: var(--bg); 
-            color: var(--text); 
-            margin: 0; 
-            user-select: none;
-            -webkit-tap-highlight-color: transparent;
-        }
+       /* ========== Responsive mobile-first ========== */
 
-        .page { display: none; padding: 20px; min-height: 100vh; box-sizing: border-box; }
-        .page.active { display: block; animation: fadeIn 0.2s ease; }
-        
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+/* 1) Rendre la mise en page plus compacte sur petit écran */
+.page {
+  padding: 14px;                 /* au lieu de 20px */
+}
 
-        .header { 
-            text-align: center; 
-            margin-bottom: 25px; 
-            background: white; 
-            padding: 20px; 
-            border-radius: 0 0 20px 20px; 
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05); 
-        }
+/* 2) Header et logo */
+.header {
+  padding: 12px;
+  margin-bottom: 16px;
+  border-radius: 0 0 16px 16px;
+}
 
-        .logo-placeholder { 
-            font-weight: 900; 
-            font-size: 28px; 
-            color: var(--primary); 
-            letter-spacing: -1px; 
-            margin: 0;
-        }
+.logo-img {
+  max-width: 150px;
+  width: auto;
+  height: auto;
+}
 
-        .header p { margin: 5px 0 0 0; color: #64748b; font-size: 14px; }
+/* 3) Boutons : taille + padding adaptés */
+.btn {
+  padding: 16px;                 /* au lieu de 22px */
+  border-radius: 14px;
+  font-size: 15px;               /* au lieu de 17px */
+  gap: 10px;                     /* évite que ça colle */
+}
 
-        .grid { display: grid; gap: 12px; }
-        
-        .btn { 
-            padding: 22px; 
-            border: none; 
-            border-radius: 16px; 
-            background: white; 
-            font-size: 17px; 
-            font-weight: bold; 
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            cursor: pointer; 
-            text-align: left; 
-        }
-        
-        .btn:active { background-color: #f8fafc; }
+.btn-sub {
+  font-size: 14px;
+}
 
-        .btn-panne { border-left: 8px solid var(--danger); color: var(--danger); }
-        .btn-cause { border-left: 8px solid var(--info); color: var(--info); }
-        .btn-sub { border-left: 6px solid var(--primary); font-size: 15px; }
+/* 4) Barre de recherche */
+.search-bar {
+  padding: 8px 0;
+  gap: 8px;
+}
 
-        .search-bar { 
-            display: flex; 
-            gap: 10px; 
-            position: sticky; 
-            top: 0; 
-            background: var(--bg); 
-            padding: 10px 0; 
-            z-index: 10; 
-        }
+.search-input {
+  padding: 12px 12px 12px 38px;
+  font-size: 15px;
+}
 
-        .back-btn { 
-            padding: 12px 15px; 
-            border: none; 
-            background: white; 
-            border-radius: 12px; 
-            font-weight: bold; 
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
-        }
+.back-btn {
+  padding: 10px 12px;
+  border-radius: 10px;
+}
 
-        .input-wrapper { position: relative; flex: 1; }
-        
-        .search-input { 
-            width: 100%; 
-            padding: 15px 15px 15px 40px; 
-            border: 2px solid #cbd5e1; 
-            border-radius: 12px; 
-            font-size: 16px; 
-            outline: none; 
-            box-sizing: border-box; 
-        }
+/* 5) Résultats : plus compacts */
+.item {
+  padding: 14px;
+  border-radius: 12px;
+}
 
-        .icon-search { position: absolute; left: 12px; top: 15px; }
+.item-desc {
+  font-size: 13px;
+}
 
-        .item { 
-            background: white; 
-            padding: 18px; 
-            border-radius: 14px; 
-            margin-bottom: 8px; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            border-left: 5px solid #cbd5e1; 
-        }
+.item-code {
+  font-size: 18px;
+  min-width: 54px;
+}
 
-        .item-desc { font-weight: 600; font-size: 14px; flex: 1; padding-right: 10px; }
-        
-        .item-code { 
-            font-family: monospace; 
-            font-size: 20px; 
-            font-weight: 900; 
-            color: var(--primary); 
-            background: #eff6ff; 
-            padding: 5px 10px; 
-            border-radius: 8px; 
-        }
+/* 6) Très petits écrans (ex: anciens Android / iPhone SE) */
+@media (max-width: 360px) {
+  .page { padding: 12px; }
+  .btn { padding: 14px; font-size: 14px; }
+  .logo-img { max-width: 130px; }
+  .item-code { font-size: 16px; min-width: 48px; }
+}
+
+/* 7) Écrans plus larges : on ré-augmente progressivement */
+@media (min-width: 480px) {
+  .page { padding: 18px; }
+  .btn { padding: 18px; font-size: 16px; }
+  .logo-img { max-width: 190px; }
+}
+
+@media (min-width: 768px) {
+  .page { padding: 20px; }
+  .btn { padding: 20px; font-size: 17px; }
+  .logo-img { max-width: 220px; }
+}
+
     </style>
 
 </head>
@@ -940,6 +904,7 @@ if ("serviceWorker" in navigator) {
 </body>
 
 </html>
+
 
 
 
