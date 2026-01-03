@@ -2,7 +2,7 @@
   "name": "AKWEL Maintenance Pro",
   "short_name": "AKWEL",
   "start_url": "./index.html",
-  "scope": "./",
+"scope": "./"
   "display": "standalone",
   "background_color": "#f1f5f9",
   "theme_color": "#1d1d3b",
@@ -11,6 +11,7 @@
     { "src": "/projet_maintenance/Logo_Akwel.512.png", "sizes": "512x512", "type": "image/png" }
   ]
 }
+
 
 
 
