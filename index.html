@@ -200,7 +200,49 @@
             background: #fef08a;
             padding: 0 2px;
             border-radius: 3px;
-        }
+        }/* Style pour les badges d'état (en attente, livré, etc.) */
+/* Styles pour l'interface PDR */
+.btn-sub {
+    border-left: 6px solid var(--primary);
+    font-size: 15px;
+}
+
+/* Couleurs des lignes pour le technicien */
+.status-attente { background: white; color: var(--text); }
+.status-ok { background: #dcfce7 !important; color: #166534; }    /* Vert */
+.status-partiel { background: #fef3c7 !important; color: #92400e; } /* Jaune */
+.status-rupture { background: #fee2e2 !important; color: #991b1b; } /* Rouge */
+.status-incompris { background: #1e293b !important; color: white; }  /* Noir */
+
+/* Style Tableau Magasinier */
+#magasin-flux table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+#magasin-flux th, #magasin-flux td {
+    padding: 12px 8px;
+    border-bottom: 1px solid #e2e8f0;
+    text-align: left;
+}
+
+/* Menu surgissant (Modal) pour le magasinier */
+.modal-mag {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0 0 50px rgba(0,0,0,0.3);
+    z-index: 100;
+    display: none; /* Caché par défaut */
+    width: 80%;
+    max-width: 400px;
+}
     </style>
 </head>
 
@@ -227,7 +269,57 @@
         </button>
     </div>
 </div>
+<div id="pdr-selection" class="page">
+    <div class="header">
+        <button class="back-btn" onclick="showPage('home')">⬅️ Retour</button>
+        <h2>Gestion PDR</h2>
+    </div>
+    <div class="grid">
+        <button class="btn" style="border-left:8px solid var(--info)" onclick="showPage('pdr-technicien')">
+            🛠️ TECHNICIEN / OUTILLEUR <span>→</span>
+        </button>
+        <button class="btn" style="border-left:8px solid var(--warning)" onclick="ouvrirMagasinier()">
+            🏬 MAGASINIER <span>→</span>
+        </button>
+    </div>
+</div>
 
+<div id="pdr-technicien" class="page">
+    <div class="header">
+        <button class="back-btn" onclick="showPage('pdr-selection')">⬅️</button>
+        <h2>Ma Demande PDR</h2>
+    </div>
+    <div class="grid" style="background:white; padding:15px; border-radius:15px; margin-bottom:20px;">
+        <input type="text" id="input_pdr_nom" class="search-input" placeholder="Désignation de la pièce...">
+        <div style="display:flex; gap:10px; margin-top:10px;">
+            <input type="number" id="input_pdr_qty" class="search-input" value="1" style="flex:1">
+            <button class="btn-panne" style="padding:10px 20px; border-radius:12px;" onclick="creerDemande()">ENVOYER</button>
+        </div>
+    </div>
+    <div id="tech-suivi-list" class="grid">
+        </div>
+</div>
+
+<div id="pdr-magasinier" class="page">
+    <div class="header">
+        <button class="back-btn" onclick="showPage('pdr-selection')">⬅️ Quitter</button>
+        <h2>Tableau de Bord Magasin</h2>
+    </div>
+    <div id="magasin-flux" style="overflow-x:auto;">
+        <table style="width:100%; border-collapse: collapse; background:white; border-radius:10px;">
+            <thead>
+                <tr style="background:#f8fafc; text-align:left; font-size:12px;">
+                    <th style="padding:10px;">PIÈCE</th>
+                    <th>QTÉ</th>
+                    <th>HEURE</th>
+                    <th>ACTION</th>
+                </tr>
+            </thead>
+            <tbody id="magasin-table-body">
+                </tbody>
+        </table>
+    </div>
+</div>
 <!-- MENU PANNES -->
 <div id="menu-pannes" class="page">
     <button class="back-btn" onclick="show('home')">← Retour</button>
@@ -273,7 +365,44 @@
 
 </body>
 </html>
+<script>// Fonction pour changer de page (vérifiez si vous l'avez déjà, sinon ajoutez-la)
+function showPage(id) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    window.scrollTo(0,0);
+}
 
+// Sécurité Magasinier (Code PIN)
+function ouvrirMagasinier() {
+    const pin = prompt("Entrez le code d'accès Magasinier :");
+    if (pin === "1234") { // Vous pouvez changer le code ici
+        showPage('pdr-magasinier');
+        ecouterDemandesMagasin(); // Lance l'écoute Firebase
+    } else {
+        alert("Code incorrect ! Access refusé.");
+    }
+}
+
+// Logique de création de demande (Technicien)
+function creerDemande() {
+    const nom = document.getElementById('input_pdr_nom').value;
+    const qty = document.getElementById('input_pdr_qty').value;
+    
+    if(!nom) { alert("Saisissez une pièce !"); return; }
+
+    const nouvelleDemande = {
+        p: nom,
+        q: qty,
+        s: "attente",
+        t: new Date().toLocaleTimeString('fr-FR', {hour: '2-digit', minute:'2-digit'})
+    };
+
+    // Remplacez 'db_firebase' par le nom de votre variable Firebase
+    firebase.database().ref('demandes_pdr').push(nouvelleDemande);
+    
+    document.getElementById('input_pdr_nom').value = "";
+    alert("Demande envoyée !");
+}</script>
 <script>
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
@@ -1010,6 +1139,7 @@ if ("serviceWorker" in navigator) {
 </script>
 </body>
 </html>
+
 
 
 
