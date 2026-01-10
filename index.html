@@ -201,7 +201,24 @@
 </head>
 
 <body>
-
+<section id="home" class="page active">
+    <div class="logo-container">
+        <div class="logo">AKWEL</div>
+        <div style="font-size: 14px; opacity: 0.8;">MATEUR MAINTENANCE</div>
+    </div>
+    
+    <div class="menu-grid">
+        <button class="menu-btn btn-panne" onclick="openCategory('Panne')">
+            <span>🔴 Code Panne</span>
+        </button>
+        <button class="menu-btn btn-cause" onclick="openCategory('Cause')">
+            <span>🔵 Code Cause Racine</span>
+        </button>
+        <button class="menu-btn btn-pdr" onclick="showPage('pdr-choice')" style="background: #4b5563; color: white;">
+            <span>📦 Demande PDR</span>
+        </button>
+    </div>
+</section>
 <!-- HOME -->
 <div id="home" class="page active">
     <div class="header">
@@ -1001,6 +1018,7 @@ if ("serviceWorker" in navigator) {
 </script>
 </body>
 </html>
+
 
 
 
