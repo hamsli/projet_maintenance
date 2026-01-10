@@ -208,15 +208,12 @@
         <div style="font-size: 14px; opacity: 0.8;">MATEUR MAINTENANCE</div>
     </div>
     
-    <div class="menu-grid">
-        <button class="menu-btn btn-panne" onclick="openCategory('Panne')">
-            <span>🔴 Code Panne</span>
+    <div class="grid">
+        <button class="btn btn-panne" onclick="show('menu-pannes')">
+            🛠️ PANNES <span>→</span>
         </button>
-        <button class="menu-btn btn-cause" onclick="openCategory('Cause')">
-            <span>🔵 Code Cause Racine</span>
-        </button>
-        <button class="menu-btn btn-pdr" onclick="showPage('pdr-choice')" style="background: #4b5563; color: white;">
-            <span>📦 Demande PDR</span>
+        <button class="btn btn-cause" onclick="goSearch('Cause', '')">
+            🔍 CAUSES RACINES <span>→</span>
         </button>
     </div>
 </section>
@@ -1003,6 +1000,7 @@ if ("serviceWorker" in navigator) {
 </script>
 </body>
 </html>
+
 
 
 
